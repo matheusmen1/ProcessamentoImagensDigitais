@@ -581,7 +581,8 @@ namespace ProcessamentoImagens
                             inicioX = x + 1;
                             cordX = inicioX;
                             cordY = inicioY;
-
+                            coordenadas[TL++] = cordY; // linha
+                            coordenadas[TL++] = cordX; // coluna
                             do
                             {
 
