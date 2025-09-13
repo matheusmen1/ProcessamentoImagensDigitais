@@ -1,0 +1,91 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\repo2\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{62FFB5F4-39D7-491B-B53A-8266E2053D1B}|ProcessamentoImagens\\ProcessamentoImagens.csproj|d:\\repo2\\processamentoimagens\\filtros.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{62FFB5F4-39D7-491B-B53A-8266E2053D1B}|ProcessamentoImagens\\ProcessamentoImagens.csproj|solutionrelative:processamentoimagens\\filtros.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{62FFB5F4-39D7-491B-B53A-8266E2053D1B}|ProcessamentoImagens\\ProcessamentoImagens.csproj|d:\\repo2\\processamentoimagens\\frmprincipal.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{62FFB5F4-39D7-491B-B53A-8266E2053D1B}|ProcessamentoImagens\\ProcessamentoImagens.csproj|solutionrelative:processamentoimagens\\frmprincipal.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{62FFB5F4-39D7-491B-B53A-8266E2053D1B}|ProcessamentoImagens\\ProcessamentoImagens.csproj|d:\\repo2\\processamentoimagens\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{62FFB5F4-39D7-491B-B53A-8266E2053D1B}|ProcessamentoImagens\\ProcessamentoImagens.csproj|solutionrelative:processamentoimagens\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{62FFB5F4-39D7-491B-B53A-8266E2053D1B}|ProcessamentoImagens\\ProcessamentoImagens.csproj|d:\\repo2\\processamentoimagens\\frmprincipal.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}",
+      "RelativeMoniker": "D:0:0:{62FFB5F4-39D7-491B-B53A-8266E2053D1B}|ProcessamentoImagens\\ProcessamentoImagens.csproj|solutionrelative:processamentoimagens\\frmprincipal.resx||{81828910-B8B3-4D2B-99A3-067027C180C1}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\repo2\\ProcessamentoImagens\\Program.cs",
+              "RelativeDocumentMoniker": "ProcessamentoImagens\\Program.cs",
+              "ToolTip": "D:\\repo2\\ProcessamentoImagens\\Program.cs",
+              "RelativeToolTip": "ProcessamentoImagens\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T21:37:09.148Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "frmPrincipal.designer.cs",
+              "DocumentMoniker": "D:\\repo2\\ProcessamentoImagens\\frmPrincipal.designer.cs",
+              "RelativeDocumentMoniker": "ProcessamentoImagens\\frmPrincipal.designer.cs",
+              "ToolTip": "D:\\repo2\\ProcessamentoImagens\\frmPrincipal.designer.cs",
+              "RelativeToolTip": "ProcessamentoImagens\\frmPrincipal.designer.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T21:37:07.674Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "frmPrincipal.resx",
+              "DocumentMoniker": "D:\\repo2\\ProcessamentoImagens\\frmPrincipal.resx",
+              "RelativeDocumentMoniker": "ProcessamentoImagens\\frmPrincipal.resx",
+              "ToolTip": "D:\\repo2\\ProcessamentoImagens\\frmPrincipal.resx",
+              "RelativeToolTip": "ProcessamentoImagens\\frmPrincipal.resx",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001005|",
+              "WhenOpened": "2025-09-13T21:37:06.361Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Filtros.cs",
+              "DocumentMoniker": "D:\\repo2\\ProcessamentoImagens\\Filtros.cs",
+              "RelativeDocumentMoniker": "ProcessamentoImagens\\Filtros.cs",
+              "ToolTip": "D:\\repo2\\ProcessamentoImagens\\Filtros.cs",
+              "RelativeToolTip": "ProcessamentoImagens\\Filtros.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAYAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-09-13T21:30:07.975Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -18,3 +18,14 @@ D:\6-Termo\TTC1\ProcessamentoImagens\ProcessamentoImagens\obj\Debug\Processament
 D:\6-Termo\TTC1\ProcessamentoImagens\ProcessamentoImagens\obj\Debug\ProcessamentoImagens.csproj.CoreCompileInputs.cache
 D:\6-Termo\TTC1\ProcessamentoImagens\ProcessamentoImagens\obj\Debug\ProcessamentoImagens.exe
 D:\6-Termo\TTC1\ProcessamentoImagens\ProcessamentoImagens\obj\Debug\ProcessamentoImagens.pdb
+D:\repo2\ProcessamentoImagens\bin\Debug\ProcessamentoImagens.exe.config
+D:\repo2\ProcessamentoImagens\bin\Debug\ProcessamentoImagens.exe
+D:\repo2\ProcessamentoImagens\bin\Debug\ProcessamentoImagens.pdb
+D:\repo2\ProcessamentoImagens\obj\Debug\ProcessamentoImagens.csproj.AssemblyReference.cache
+D:\repo2\ProcessamentoImagens\obj\Debug\ProcessamentoImagens.exe.config
+D:\repo2\ProcessamentoImagens\obj\Debug\ProcessamentoImagens.frmPrincipal.resources
+D:\repo2\ProcessamentoImagens\obj\Debug\ProcessamentoImagens.Properties.Resources.resources
+D:\repo2\ProcessamentoImagens\obj\Debug\ProcessamentoImagens.csproj.GenerateResource.cache
+D:\repo2\ProcessamentoImagens\obj\Debug\ProcessamentoImagens.csproj.CoreCompileInputs.cache
+D:\repo2\ProcessamentoImagens\obj\Debug\ProcessamentoImagens.exe
+D:\repo2\ProcessamentoImagens\obj\Debug\ProcessamentoImagens.pdb

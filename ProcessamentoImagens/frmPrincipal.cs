@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using System.IO;
 using System.Drawing.Imaging;
 
 namespace ProcessamentoImagens
@@ -94,6 +90,18 @@ namespace ProcessamentoImagens
             Filtros.afinamentoDMA(imageBitmap, imgDest);
             pictBoxImg2.Image = imgDest;
             pictBoxImg2.SizeMode = PictureBoxSizeMode.Zoom;
+            imgDest.Save("D:\\imagem_com_afinamento.png", ImageFormat.Png);
         }
+
+        private void btncontourFollowingDMA_Click(object sender, EventArgs e)
+        {
+            Bitmap imgDest = new Bitmap(image);
+            imageBitmap = (Bitmap)image;
+            Filtros.contourFollowingDMA(imageBitmap, imgDest);
+            pictBoxImg2.Image = imgDest;
+            pictBoxImg2.SizeMode = PictureBoxSizeMode.Zoom;
+            imgDest.Save("D:\\imagem_com_extracao_contorno.png", ImageFormat.Png);
+        }
+
     }
 }

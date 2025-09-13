@@ -40,6 +40,7 @@
             this.btnEspelharVerticalSemDMA = new System.Windows.Forms.Button();
             this.btnEspelharHorizontalSemDMA = new System.Windows.Forms.Button();
             this.btnAfinamentoDMA = new System.Windows.Forms.Button();
+            this.btncontourFollowingDMA = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictBoxImg1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictBoxImg2)).BeginInit();
             this.SuspendLayout();
@@ -152,11 +153,22 @@
             this.btnAfinamentoDMA.UseVisualStyleBackColor = true;
             this.btnAfinamentoDMA.Click += new System.EventHandler(this.btnAfinamentoDMA_Click);
             // 
+            // btncontourFollowingDMA
+            // 
+            this.btncontourFollowingDMA.Location = new System.Drawing.Point(825, 541);
+            this.btncontourFollowingDMA.Name = "btncontourFollowingDMA";
+            this.btncontourFollowingDMA.Size = new System.Drawing.Size(161, 23);
+            this.btncontourFollowingDMA.TabIndex = 114;
+            this.btncontourFollowingDMA.Text = "Contour Following com DMA";
+            this.btncontourFollowingDMA.UseVisualStyleBackColor = true;
+            this.btncontourFollowingDMA.Click += new System.EventHandler(this.btncontourFollowingDMA_Click);
+            // 
             // frmPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1220, 608);
+            this.Controls.Add(this.btncontourFollowingDMA);
             this.Controls.Add(this.btnAfinamentoDMA);
             this.Controls.Add(this.btnEspelharHorizontalSemDMA);
             this.Controls.Add(this.btnEspelharVerticalSemDMA);
@@ -191,6 +203,7 @@
         private System.Windows.Forms.Button btnEspelharVerticalSemDMA;
         private System.Windows.Forms.Button btnEspelharHorizontalSemDMA;
         private System.Windows.Forms.Button btnAfinamentoDMA;
+        private System.Windows.Forms.Button btncontourFollowingDMA;
     }
 }
 
