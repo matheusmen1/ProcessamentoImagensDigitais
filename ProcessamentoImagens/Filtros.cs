@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 
 namespace ProcessamentoImagens
 {
@@ -362,7 +364,7 @@ namespace ProcessamentoImagens
                             }
 
                         }
-                       
+
                     }
                     // deletar apos a primeira iteracao
                     int i = 0;
@@ -521,8 +523,59 @@ namespace ProcessamentoImagens
             //unlock imagem destino
             imageBitmapDest.UnlockBits(bitmapDataDst);
         }
+        private static unsafe bool verificarVizinhoPreto(int auxX, int auxY, byte* src, int stride, int pixelSize)
+        {
+            byte* aux;
+            int r0b, r1b, r2b, r3b, r4b, r5b, r6b, r7b;
+            int g0b, g1b, g2b, g3b, g4b, g5b, g6b, g7b;
+            int b0b, b1b, b2b, b3b, b4b, b5b, b6b, b7b;
+            aux = src + auxY * stride + (auxX + 1) * pixelSize;
+            b0b = (*aux++);
+            g0b = (*aux++);
+            r0b = (*aux++);
 
-        public static void contourFollowingDMA(Bitmap imageBitmapSrc, Bitmap imageBitmapDest)
+            aux = src + (auxY - 1) * stride + (auxX + 1) * pixelSize;
+            b1b = (*aux++);
+            g1b = (*aux++);
+            r1b = (*aux++);
+
+            aux = src + (auxY - 1) * stride + auxX * pixelSize;
+            b2b = (*aux++);
+            g2b = (*aux++);
+            r2b = (*aux++);
+
+            aux = src + (auxY - 1) * stride + (auxX - 1) * pixelSize;
+            b3b = (*aux++);
+            g3b = (*aux++);
+            r3b = (*aux++);
+
+            aux = src + auxY * stride + (auxX - 1) * pixelSize;
+            b4b = (*aux++);
+            g4b = (*aux++);
+            r4b = (*aux++);
+
+            aux = src + (auxY + 1) * stride + (auxX - 1) * pixelSize;
+            b5b = (*aux++);
+            g5b = (*aux++);
+            r5b = (*aux++);
+
+            aux = src + (auxY + 1) * stride + auxX * pixelSize;
+            b6b = (*aux++);
+            g6b = (*aux++);
+            r6b = (*aux++);
+
+            aux = src + (auxY + 1) * stride + (auxX + 1) * pixelSize;
+            b7b = (*aux++);
+            g7b = (*aux++);
+            r7b = (*aux++);
+
+            if ((r0b < 127 && g0b < 127 && b0b < 127) || (r1b < 127 && g1b < 127 && b1b < 127) || (r2b < 127 && g2b < 127 && b2b < 127) || (r3b < 127 && g3b < 127 && b3b < 127) || (r4b < 127 && g4b < 127 && b4b < 127) || (r5b < 127 && g5b < 127 && b5b < 127) || (r6b < 127 && g6b < 127 && b6b < 127) || (r7b < 127 && g7b < 127 && b7b < 127))
+                return true;
+            else
+                return false;
+
+        }
+        public static void contourFollowingDMA(Bitmap imageBitmapSrc, Bitmap imageBitmapDest, List<List<Coordenada>> contornos)
         {
             int width = imageBitmapSrc.Width; // pega a largura da imagem em inteiros
             int height = imageBitmapSrc.Height; // pega a altura da imagem em inteiros
@@ -556,9 +609,11 @@ namespace ProcessamentoImagens
                 int pG, g0 = -1, g1 = -1, g2 = -1, g3 = -1, g4 = -1, g5 = -1, g6 = -1, g7 = -1;
                 int pB, b0 = -1, b1 = -1, b2 = -1, b3 = -1, b4 = -1, b5 = -1, b6 = -1, b7 = -1;
                 int direcao, proximaDirecao;
-                int cordX, cordY, inicioY, inicioX, i, flag;
-                int[] coordenadas = new int[(width * height) * 2];
-                int TL = 0;
+                int cordX, cordY, inicioY, inicioX, i, flag, j;
+
+                bool[,] visitado = new bool[height, width];
+                Coordenada ponto;
+
                 for (int y = 1; y < height - 1; y++)
                 {
                     for (int x = 1; x < width - 1; x++)
@@ -572,19 +627,24 @@ namespace ProcessamentoImagens
                         b0 = (*aux++);
                         g0 = (*aux++);
                         r0 = (*aux++);
-                        if ((pR >= 127 && pG >= 127 && pB >= 127) && (r0 < 127 && g0 < 127 && b0 < 127)) // pixel preto à direita do branco
+                        if ((pR >= 127 && pG >= 127 && pB >= 127) && (r0 < 127 && g0 < 127 && b0 < 127) && !visitado[y, x]) // pixel preto à direita do branco
                         {
                             // primeiro elemento do contorno  
                             direcao = 4;
 
                             inicioY = y;
-                            inicioX = x + 1;
+                            inicioX = x;
                             cordX = inicioX;
                             cordY = inicioY;
-                            coordenadas[TL++] = cordY; // linha
-                            coordenadas[TL++] = cordX; // coluna
+                            List<Coordenada> coordenadas = new List<Coordenada>();
+
                             do
                             {
+                                if (!visitado[cordY, cordX])
+                                {
+                                    visitado[cordY, cordX] = true;
+                                    coordenadas.Add(new Coordenada(cordY, cordX));
+                                }
 
                                 if (cordX + 1 < width) // validação para não acessar lixo
                                 {
@@ -656,39 +716,39 @@ namespace ProcessamentoImagens
                                 {
                                     proximaDirecao = (direcao + 1 + i) % 8; // da onde eu vim
 
-                                    if (proximaDirecao == 0 && cordX + 1 < width && r0 < 127 && g0 < 127 && b0 < 127)
+                                    if (proximaDirecao == 0 && cordX + 1 < width && r0 >= 127 && g0 >= 127 && b0 >= 127 && verificarVizinhoPreto(cordX + 1, cordY, src, bitmapDataSrc.Stride, pixelSize))
                                     {
                                         cordX++;
                                         flag = 1;
                                     }
                                     else
-                                    if (proximaDirecao == 1 && cordX + 1 < width && cordY - 1 >= 0 && r1 < 127 && g1 < 127 && b1 < 127)
+                                    if (proximaDirecao == 1 && cordX + 1 < width && cordY - 1 >= 0 && r1 >= 127 && g1 >= 127 && b1 >= 127 && verificarVizinhoPreto(cordX + 1, cordY - 1, src, bitmapDataSrc.Stride, pixelSize))
                                     {
                                         cordY--;
                                         cordX++;
                                         flag = 1;
                                     }
                                     else
-                                    if (proximaDirecao == 2 && cordY - 1 >= 0 && r2 < 127 && g2 < 127 && b2 < 127)
+                                    if (proximaDirecao == 2 && cordY - 1 >= 0 && r2 >= 127 && g2 >= 127 && b2 >= 127 && verificarVizinhoPreto(cordX, cordY - 1, src, bitmapDataSrc.Stride, pixelSize))
                                     {
                                         cordY--;
                                         flag = 1;
                                     }
                                     else
-                                    if (proximaDirecao == 3 && cordY - 1 >= 0 && r3 < 127 && g3 < 127 && b3 < 127)
+                                    if (proximaDirecao == 3 && cordY - 1 >= 0 && r3 >= 127 && g3 >= 127 && b3 >= 127 && verificarVizinhoPreto(cordX - 1, cordY - 1, src, bitmapDataSrc.Stride, pixelSize))
                                     {
                                         cordY--;
                                         cordX--;
                                         flag = 1;
                                     }
                                     else
-                                    if (proximaDirecao == 4 && cordX - 1 >= 0 && r4 < 127 && g4 < 127 && b4 < 127)
+                                    if (proximaDirecao == 4 && cordX - 1 >= 0 && r4 >= 127 && g4 >= 127 && b4 >= 127 && verificarVizinhoPreto(cordX - 1, cordY, src, bitmapDataSrc.Stride, pixelSize))
                                     {
                                         cordX--;
                                         flag = 1;
                                     }
                                     else
-                                    if (proximaDirecao == 5 && cordY + 1 < height && cordX - 1 >= 0 && r5 < 127 && g5 < 127 && b5 < 127)
+                                    if (proximaDirecao == 5 && cordY + 1 < height && cordX - 1 >= 0 && r5 >= 127 && g5 >= 127 && b5 >= 127 && verificarVizinhoPreto(cordX - 1, cordY + 1, src, bitmapDataSrc.Stride, pixelSize))
                                     {
 
                                         cordY++;
@@ -696,13 +756,13 @@ namespace ProcessamentoImagens
                                         flag = 1;
                                     }
                                     else
-                                    if (proximaDirecao == 6 && cordY + 1 < height && r6 < 127 && g6 < 127 && b6 < 127)
+                                    if (proximaDirecao == 6 && cordY + 1 < height && r6 >= 127 && g6 >= 127 && b6 >= 127 && verificarVizinhoPreto(cordX, cordY + 1, src, bitmapDataSrc.Stride, pixelSize))
                                     {
                                         cordY++;
                                         flag = 1;
                                     }
                                     else
-                                    if (proximaDirecao == 7 && cordX + 1 < width && cordY + 1 < height && r7 < 127 && g7 < 127 && b7 < 127)
+                                    if (proximaDirecao == 7 && cordX + 1 < width && cordY + 1 < height && r7 >= 127 && g7 >= 127 && b7 >= 127 && verificarVizinhoPreto(cordX + 1, cordY + 1, src, bitmapDataSrc.Stride, pixelSize))
                                     {
 
                                         cordY++;
@@ -714,151 +774,150 @@ namespace ProcessamentoImagens
                                     if (flag == 1)
                                     {
                                         direcao = (proximaDirecao + 4) % 8;
-                                        coordenadas[TL++] = cordY; // linha
-                                        coordenadas[TL++] = cordX; // coluna
                                     }
                                     i++;
                                 }
 
-
-
                             } while (cordX != inicioX || cordY != inicioY);
+
+                            contornos.Add(coordenadas);
+
                         }
 
                     }
                 }
 
                 i = 0;
-                while (i < TL)
+                while (i < contornos.Count)
                 {
-                    cordY = coordenadas[i++];
-                    cordX = coordenadas[i++];
+                    List<Coordenada> coordenadas = contornos[i];
+                    j = 0;
+                    while (j < coordenadas.Count)
+                    {
+                        ponto = coordenadas[j];
+                        cordY = ponto.getY();
+                        cordX = ponto.getX();
 
-                    if (cordX + 1 < width)
-                    {
-                        aux = src + cordY * bitmapDataSrc.Stride + (cordX + 1) * pixelSize;
-                        b0 = (*aux++);
-                        g0 = (*aux++);
-                        r0 = (*aux++);
+                        dstAux = dst + cordY * bitmapDataDst.Stride + cordX * pixelSize;
+                        *(dstAux++) = 0;
+                        *(dstAux++) = 0;
+                        *(dstAux++) = 0;
+                        j++;
                     }
-
-                    if (cordX + 1 < width && cordY - 1 >= 0)
-                    {
-                        aux = src + (cordY - 1) * bitmapDataSrc.Stride + (cordX + 1) * pixelSize;
-                        b1 = (*aux++);
-                        g1 = (*aux++);
-                        r1 = (*aux++);
-                    }
-
-                    if (cordY - 1 >= 0)
-                    {
-                        aux = src + (cordY - 1) * bitmapDataSrc.Stride + cordX * pixelSize;
-                        b2 = (*aux++);
-                        g2 = (*aux++);
-                        r2 = (*aux++);
-                    }
-
-                    if (cordY - 1 >= 0 && cordX - 1 >= 0)
-                    {
-                        aux = src + (cordY - 1) * bitmapDataSrc.Stride + (cordX - 1) * pixelSize;
-                        b3 = (*aux++);
-                        g3 = (*aux++);
-                        r3 = (*aux++);
-                    }
-
-                    if (cordX - 1 >= 0)
-                    {
-                        aux = src + cordY * bitmapDataSrc.Stride + (cordX - 1) * pixelSize;
-                        b4 = (*aux++);
-                        g4 = (*aux++);
-                        r4 = (*aux++);
-                    }
-
-                    if (cordY + 1 < height && cordX - 1 >= 0)
-                    {
-                        aux = src + (cordY + 1) * bitmapDataSrc.Stride + (cordX - 1) * pixelSize;
-                        b5 = (*aux++);
-                        g5 = (*aux++);
-                        r5 = (*aux++);
-                    }
-
-                    if (cordY + 1 < height)
-                    {
-                        aux = src + (cordY + 1) * bitmapDataSrc.Stride + cordX * pixelSize;
-                        b6 = (*aux++);
-                        g6 = (*aux++);
-                        r6 = (*aux++);
-                    }
-
-                    if (cordY + 1 < height && cordX + 1 < width)
-                    {
-                        aux = src + (cordY + 1) * bitmapDataSrc.Stride + (cordX + 1) * pixelSize;
-                        b7 = (*aux++);
-                        g7 = (*aux++);
-                        r7 = (*aux++);
-                    }
-
-                    if (r0 >= 127 && g0 >= 127 && b0 >= 127)
-                    {
-                        dstAux = dst + cordY * bitmapDataDst.Stride + (cordX + 1) * pixelSize;
-                        *(dstAux++) = 0;
-                        *(dstAux++) = 0;
-                        *(dstAux++) = 0;
-                    }
-                    if (r1 >= 127 && g1 >= 127 && b1 >= 127)
-                    {
-                        dstAux = dst + (cordY - 1) * bitmapDataDst.Stride + (cordX + 1) * pixelSize;
-                        *(dstAux++) = 0;
-                        *(dstAux++) = 0;
-                        *(dstAux++) = 0;
-                    }
-                    if (r2 >= 127 && g2 >= 127 && b2 >= 127)
-                    {
-                        dstAux = dst + (cordY - 1) * bitmapDataDst.Stride + cordX * pixelSize;
-                        *(dstAux++) = 0;
-                        *(dstAux++) = 0;
-                        *(dstAux++) = 0;
-                    }
-                    if (r3 >= 127 && g3 >= 127 && b3 >= 127)
-                    {
-                        dstAux = dst + (cordY - 1) * bitmapDataDst.Stride + (cordX - 1) * pixelSize;
-                        *(dstAux++) = 0;
-                        *(dstAux++) = 0;
-                        *(dstAux++) = 0;
-                    }
-                    if (r4 >= 127 && g4 >= 127 && b4 >= 127)
-                    {
-                        dstAux = dst + cordY * bitmapDataDst.Stride + (cordX - 1) * pixelSize;
-                        *(dstAux++) = 0;
-                        *(dstAux++) = 0;
-                        *(dstAux++) = 0;
-                    }
-                    if (r5 >= 127 && g5 >= 127 && b5 >= 127)
-                    {
-                        dstAux = dst + (cordY + 1) * bitmapDataDst.Stride + (cordX - 1) * pixelSize;
-                        *(dstAux++) = 0;
-                        *(dstAux++) = 0;
-                        *(dstAux++) = 0;
-                    }
-                    if (r6 >= 127 && g6 >= 127 && b6 >= 127)
-                    {
-                        dstAux = dst + (cordY + 1) * bitmapDataDst.Stride + cordX * pixelSize;
-                        *(dstAux++) = 0;
-                        *(dstAux++) = 0;
-                        *(dstAux++) = 0;
-                    }
-                    if (r7 >= 127 && g7 >= 127 && b7 >= 127)
-                    {
-                        dstAux = dst + (cordY + 1) * bitmapDataDst.Stride + (cordX + 1) * pixelSize;
-                        *(dstAux++) = 0;
-                        *(dstAux++) = 0;
-                        *(dstAux++) = 0;
-                    }
-
+                    i++;
                 }
 
             }
 
+            //unlock imagem origem 
+            imageBitmapSrc.UnlockBits(bitmapDataSrc);
+            //unlock imagem destino
+            imageBitmapDest.UnlockBits(bitmapDataDst);
+        }
+        public static void retanguloMinimoDMA(Bitmap imageBitmapSrc, Bitmap imageBitmapDest, List<List<Coordenada>> contornos)
+        {
+            int width = imageBitmapSrc.Width; // pega a largura da imagem em inteiros
+            int height = imageBitmapSrc.Height; // pega a altura da imagem em inteiros
+            int pixelSize = 3;
+
+            //lock dados bitmap origem 
+            BitmapData bitmapDataSrc = imageBitmapSrc.LockBits(new Rectangle(0, 0, width, height),
+                ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+            //lock dados bitmap destino
+            BitmapData bitmapDataDst = imageBitmapDest.LockBits(new Rectangle(0, 0, width, height),
+                ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
+
+            unsafe
+            {
+                byte* src = (byte*)bitmapDataSrc.Scan0.ToPointer();
+                byte* dst = (byte*)bitmapDataDst.Scan0.ToPointer();
+
+                byte* dstAux;
+                List<int> yListMin = new List<int>();
+                List<int> yListMax = new List<int>();
+                List<int> xListMin = new List<int>();
+                List<int> xListMax = new List<int>();
+
+                int yMin, yMax, xMax, xMin, i, j, y, x;
+                List<Coordenada> coordenadas;
+                Coordenada ponto;
+                i = 0;
+                while (i < contornos.Count)
+                {
+                    coordenadas = contornos[i];
+                    j = 0;
+                    yMin = height; yMax = 0; xMax = 0; xMin = width;
+                    while (j < coordenadas.Count)
+                    {
+                        ponto = coordenadas[j];
+                        y = ponto.getY();
+                        x = ponto.getX();
+
+                        if (y < yMin)
+                        {
+                            yMin = y;
+                        }
+                        if (y > yMax)
+                        {
+                            yMax = y;
+                        }
+                        if (x < xMin)
+                        {
+                            xMin = x;
+                        }
+                        if (x > xMax)
+                        {
+                            xMax = x;
+                        }
+
+                        j++;
+                    }
+                    yListMin.Add(yMin);
+                    yListMax.Add(yMax);
+                    xListMin.Add(xMin);
+                    xListMax.Add(xMax);
+
+                    i++;
+                }
+
+
+                for (i = 0; i < yListMin.Count; i++)
+                {
+                    yMin = yListMin[i];
+                    yMax = yListMax[i];
+                    xMin = xListMin[i];
+                    xMax = xListMax[i];
+                    for (x = xMin; x <= xMax; x++)
+                    {
+                        dstAux = dst + yMin * bitmapDataDst.Stride + x * pixelSize;
+                        *(dstAux++) = 0;
+                        *(dstAux++) = 0;
+                        *(dstAux++) = 255;
+
+                        dstAux = dst + yMax * bitmapDataDst.Stride + x * pixelSize;
+                        *(dstAux++) = 0;
+                        *(dstAux++) = 0;
+                        *(dstAux++) = 255;
+
+                    }
+                    for (y = yMin; y <= yMax; y++)
+                    {
+                        dstAux = dst + y * bitmapDataDst.Stride + xMin * pixelSize;
+                        *(dstAux++) = 0;
+                        *(dstAux++) = 0;
+                        *(dstAux++) = 255;
+
+                        dstAux = dst + y * bitmapDataDst.Stride + xMax * pixelSize;
+                        *(dstAux++) = 0;
+                        *(dstAux++) = 0;
+                        *(dstAux++) = 255;
+
+                    }
+
+
+                }
+
+            }
             //unlock imagem origem 
             imageBitmapSrc.UnlockBits(bitmapDataSrc);
             //unlock imagem destino
